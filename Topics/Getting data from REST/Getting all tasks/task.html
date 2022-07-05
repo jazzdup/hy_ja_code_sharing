@@ -1,0 +1,18 @@
+<p><div class="alert alert-warning">This problem is fully supported by version 2021.9 of the EduTools plugin and newer. To avoid possible errors, please make sure that the plugin is updated. Alternatively, you can solve it using the web interface.</div></p>
+
+<p>Currently, we have a controller with a list of tasks, but there is no endpoint that allows us to access them. Your task is to implement the following endpoint:</p>
+
+<p><code class="language-json">GET /tasks/all</code> – returns all tasks as an array of JSON objects. In case of success, the server should respond with <code class="language-json">200 (OK)</code> status code.</p>
+
+<p><strong>Example</strong>:<strong> </strong>Response for a <code class="language-json">GET /tasks/all</code> request:</p>
+
+<pre><code class="language-json">[
+   {
+      "name": "Improve UI",
+      "description": "implement ..."
+   },
+   {
+      "name": "Color bug",
+      "description": "fix ..."
+   }
+]</code></pre>

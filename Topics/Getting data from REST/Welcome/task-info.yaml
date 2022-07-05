@@ -1,0 +1,114 @@
+type: edu
+files:
+- name: test/Tests.java
+  visible: false
+  text: |-
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.dynamic.input.DynamicTesting;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.mocks.web.response.HttpResponse;
+    import org.hyperskill.hstest.stage.SpringTest;
+
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import task.Main;
+
+    import static org.hyperskill.hstest.testcase.CheckResult.correct;
+    import static org.hyperskill.hstest.testcase.CheckResult.wrong;
+
+
+    public class Tests extends SpringTest {
+
+        public Tests() {
+            super(Main.class);
+        }
+
+        static final String WELCOME_MSG = "Welcome!";
+        static final String API_WELCOME = "/welcome";
+
+        static void throwIfIncorrectStatusCode(HttpResponse response, int status) {
+            if (response.getStatusCode() != status) {
+                throw new WrongAnswer(response.getRequest().getMethod() +
+                        " " + response.getRequest().getLocalUri() +
+                        " should respond with status code " + status +
+                        ", responded: " + response.getStatusCode() + "\n\n" +
+                        "Response body:\n" + response.getContent());
+            }
+        }
+
+        @DynamicTest
+        DynamicTesting[] dt = new DynamicTesting[]{
+                this::testGetWelcome
+        };
+
+        CheckResult testGetWelcome() {
+            HttpResponse response = get(API_WELCOME).send();
+
+            throwIfIncorrectStatusCode(response, 200);
+
+            return WELCOME_MSG.equals(response.getContent()) ? correct() :
+                    wrong("Expected string: \"" + WELCOME_MSG + "\", received: \"" + response.getContent() + "\".");
+        }
+
+    }
+  learner_created: false
+- name: build.gradle
+  visible: false
+  text: |-
+    plugins {
+        id 'java'
+        id 'org.springframework.boot' version '2.3.1.RELEASE'
+        id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+
+    sourceSets.main.resources.srcDirs = ["resources"]
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+    }
+  learner_created: false
+- name: resources/application.properties
+  visible: false
+  text: |-
+    server.port=28852
+    management.endpoints.web.exposure.include=*
+    management.endpoint.shutdown.enabled=true
+  learner_created: false
+- name: src/task/Main.java
+  visible: false
+  text: |+
+    package task;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+    @SpringBootApplication
+    public class Main {
+
+        public static void main(String[] args) {
+            SpringApplication.run(Main.class, args);
+        }
+    }
+
+  learner_created: false
+- name: src/task/SimpleController.java
+  visible: true
+  text: |
+    package task;
+
+    import org.springframework.web.bind.annotation.*;
+
+    public class SimpleController {
+
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/14465#comment
+status: Solved
+record: -1

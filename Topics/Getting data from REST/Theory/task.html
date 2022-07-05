@@ -1,0 +1,128 @@
+<h2>Getting data from REST</h2>
+<html>
+ <head></head>
+ <body>
+  <p>Web-based applications communicate with a server via <strong>API</strong> — various methods that can be processed through <strong>HTTP </strong>(HyperText Transfer Protocol) <strong>requests</strong>. A <strong>controller</strong> is a part of the application that handles these API methods.</p> 
+  <p>In this topic, we will take a look at how you can implement a basic <strong>REST-based controller </strong>for retrieving data through <code class="language-java">GET</code> requests. The diagram below outlines the typical flow of a REST API when a <code class="language-java">GET</code> request is sent to the server through Spring.</p> 
+  <p style="text-align: center;"><img alt="" height="254" src="https://ucarecdn.com/047f0c66-9180-4816-aa14-8b84784791e5/" width="675"></p> 
+  <h5>Rest Controller</h5> 
+  <p>The <code class="language-java">@RestController</code> annotation usually sits on top of the class. It makes a class provide exact endpoints (a requested URL) to access the REST methods. The class along with class methods can tell which requests suit your case. All appropriate requests will be sent to the specific method of this class.</p> 
+  <p>Suppose that we want to create an API. When a user accesses a specific URL, they receive <code class="language-java">1</code>. To make it possible with Spring, we will implement two annotations. The first annotation is <code class="language-java">@RestController</code> that is used to handle any REST requests sent by a user to the application. To create a <code class="language-java">@RestController</code>, we should create a Java class and annotate it with <code class="language-java">@RestController</code>:</p> 
+  <pre><code class="language-java">import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class TaskController {
+
+}</code></pre> 
+  <p>The <code class="language-java">@RestController</code> annotation is a wrapper of two different annotations:</p> 
+  <ol> 
+   <li><code class="language-java">@Controller</code> contains handler methods for various requests. Since we opt for <code class="language-java">@RestController</code>, the methods are related to REST requests.</li> 
+   <li><code class="language-java">@ResponseBody</code> contains an object of each handler method. They will be represented in JSON format. When we send a request, the response we receive is in JSON format. This will become clear when we start working with objects in our <code class="language-java">GET</code> requests.</li> 
+  </ol> 
+  <p>We can implement methods to handle various REST requests in <code class="language-java">@RestController</code>. To implement a <code class="language-java">GET</code> request, we can use a <code class="language-java">@GetMapping</code> annotation. It indicates what URL path should be associated with a <code class="language-java">GET</code> request. After that, we can implement a method that is executed when the <code class="language-java">GET</code> request is received at that path. For example, we can create a <code class="language-java">GET</code> request that returns <code class="language-java">1</code> when <em>http://localhost:8080/test </em>is accessed:</p> 
+  <pre><code class="language-java">@RestController
+public class TaskController {
+
+    @GetMapping("/test")
+    public int returnOne() {
+        return 1;
+    }
+}</code></pre> 
+  <p>When you send a request to <code class="language-java">http://localhost:8080/test</code>, you will receive <code class="language-java">1</code> in return.</p> 
+  <p style="text-align: center;"><img alt="" height="427" src="https://ucarecdn.com/40fff02d-18b5-40fa-a135-ef68675dd8d8/" width="581"></p> 
+  <p></p>
+  <div class="alert alert-primary">
+   In addition to Postman, it is also possible to send a 
+   <code class="language-java">GET</code>request to the server through a browser. To do so, simply open the browser, and navigate to the same URL as Postman (in this example, 
+   <em>http://localhost:8080/test</em>). 
+  </div>
+  <p></p> 
+  <h5>GET with Collections</h5> 
+  <p>A list is a good way to store data. Sometimes, we want to return a full list or a specific list index when a <code class="language-java">GET</code> request is received. We can adjust our <code class="language-java">@GetMapping</code> annotation to do so.</p> 
+  <p>We need to create a simple object to store in our list. Call it <code class="language-java">Task</code>. It will implement a <strong>basic constructor </strong>as well as <strong>getters </strong>and <strong>setters </strong>for each of the object properties:</p> 
+  <pre><code class="language-java">public class Task {
+
+    private int id;
+    private String name;
+    private String description;
+    private boolean completed;
+
+    public Task() {}
+
+    public Task(int id, String name, String description, boolean completed) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.completed = completed;
+    }
+
+    // getters and setters
+}</code></pre> 
+  <p></p>
+  <div class="alert alert-warning">
+   It is very important to implement getters and setters. If they are not implemented, Spring will not be able to display object contents correctly. Spring will try to return all data from our controller in JSON format or similar. To construct a representation of our object that can be read properly, Spring needs getters and setters to access the object properties.
+  </div>
+  <p></p> 
+  <p>After that, we can implement a collection to store our tasks. We are going to use a list. When we work with Spring, we can end up facing a lot of <code class="language-java">GET</code> requests at the same time. In this case, it would be a good idea to use an immutable collection to eliminate any thread-based issues. We also need to make sure that our collection can be used by our application:</p> 
+  <pre><code class="language-java">@RestController
+public class TaskController {
+    List&lt;Task&gt; taskList = List.of(
+            new Task(1, "task1", "A first test task", false),
+            new Task(2, "task2", "A second test task", true)
+    );
+}</code></pre> 
+  <p>In the snippet above, we have created the <code class="language-java">Task</code> list and populated it with sample tasks. You can start working with the object from a database query right away. After that, we need to create a <code class="language-java">@GetMapping</code> function that can be used to retrieve data from the tasks collection.</p> 
+  <pre><code class="language-java">@RestController
+public class TaskController {
+    List&lt;Task&gt; taskList = List.of(
+            new Task(1, "task1", "A first test task", false),
+            new Task(2, "task2", "A second test task", true)
+    );
+
+    @GetMapping("/tasks")
+    public List&lt;Task&gt; getTasks() {
+        return taskList;
+    }
+}</code></pre> 
+  <p>Now, when we make a request to <em>http://localhost:8080/tasks/</em>, we will see all tasks that have been added earlier:</p> 
+  <p style="text-align: center;"><img alt="" src="https://ucarecdn.com/96b09086-f297-4cce-b7da-08250142cc7f/"></p> 
+  <p></p>
+  <div class="alert alert-primary">
+   In addition to a 
+   <code class="language-java">List</code>, it is also possible to return other types of collections from a 
+   <code class="language-java">RestController</code>. As in case of a list, a 
+   <code class="language-java">Set</code> is converted to a JSON array. However, a 
+   <code class="language-java">Map</code> is converted to a JSON key-value structure.
+  </div>
+  <p></p> 
+  <h5>@PathVariable</h5> 
+  <p>We may want to modify the code above so that users could enter an ID to specify which task they would like to retrieve. To do this, we will need to add a <code class="language-java">@PathVariable</code> annotation to <code class="language-java">@GetMapping</code>. The code below shows how we can add an ID to our <code class="language-java">getTask</code> function:</p> 
+  <pre><code class="language-java">@RestController
+public class TaskController {
+    List&lt;Task&gt; taskList = List.of(
+        new Task(1, "task1", "A first test task", false),
+        new Task(2, "task2", "A second test task", true)
+    );
+
+    @GetMapping("/tasks/{id}")
+    public Task getTask(@PathVariable int id) {
+        return taskList.get(id);
+    }
+}</code></pre> 
+  <p>We added <code class="language-java">{id}</code> to the <code class="language-java">@GetMapping</code> annotation to tell Spring that we expect the <code class="language-java">id</code> parameter. We can place the <code class="language-java">id</code> variable as <code class="language-java">@PathVariable</code> in the arguments of our <code class="language-java">getTask</code> method. It indicates to Spring how to map the parameter provided in <code class="language-java">@GetMapping</code> to the function. After that, the function will return only one element rather than the whole collection. A request to <em>http://localhost:8080/tasks/0 </em>gives us the first task in the list:</p> 
+  <p style="text-align: center;"><img alt="" src="https://ucarecdn.com/40879bf3-33c7-4148-8f72-ecf234c8ee3e/"></p> 
+  <p>However, if we provide an invalid id, we will receive a <strong>500 error</strong>, similar to what is pictured below:</p> 
+  <p style="text-align: center;"><img alt="" height="456" src="https://ucarecdn.com/62512521-dabb-41da-bd80-c9d3a3b08511/" width="598"></p> 
+  <h5>Customizing the status code</h5> 
+  <p>By default, a method annotated with <code class="language-java">@GetMapping</code> returns the status code <code class="language-java">200 OK</code> in the response if a request has been processed successfully and the status code <code class="language-java">500</code> if there is an uncaught exception. However, we can change this default status code by returning an object of the <code class="language-java">ResponseEntity&lt;T&gt;</code> class as the result.</p> 
+  <p>There is an example below when we return <code class="language-java">202 ACCEPTED</code> instead of <code class="language-java">200 OK</code>.</p> 
+  <pre><code class="language-java">@GetMapping("/tasks/{id}")
+public ResponseEntity&lt;Task&gt; getTasks(@PathVariable int id) {
+    return new ResponseEntity&lt;&gt;(taskList.get(id), HttpStatus.ACCEPTED);
+}</code></pre> 
+  <p>Actually, the status code <code class="language-java">202 ACCEPTED</code> is not the best example for this case, but it clearly demonstrates the possibility to change the status code.</p> 
+  <h5>Conclusion</h5> 
+  <p>A controller is the first component that meets and greets a web request. In this topic, we have covered how to define a <code class="language-java">GET</code> method in a <code class="language-java">@RestController</code> annotated class to receive data from a web application. This request type is common in APIs and is often required to return sets or single elements.</p> 
+  <p>On the one hand, web-app developers need to keep the handlers short and clear as it helps to find the right handler and create a correct request quickly. On the other hand, web apps are clients for other web apps. It means that they can call controllers of other applications. That's why you also need to know foreign handlers to figure out what requests they can handle.</p>
+ </body>
+</html>

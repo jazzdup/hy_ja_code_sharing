@@ -1,0 +1,42 @@
+<p><div class="alert alert-warning">This problem is fully supported by version 2021.9 of the EduTools plugin and newer. To avoid possible errors, please make sure that the plugin is updated. Alternatively, you can solve it using the web interface.</div></p>
+
+<p>In this task, you'll create a simple service that returns information about students. The task consists of the following steps:</p>
+
+<p>1. Add a class <code class="language-json">Student</code> with 2 fields: <code class="language-json">int id</code>, <code class="language-json">String name</code>. Add necessary methods and constructors.</p>
+
+<p>2. Create 3 students with arbitrary values. There are two restrictions: the field <code class="language-json">name</code> shouldn't be <code class="language-json">null</code> and should contain at least 1 character, and ids should be unique.</p>
+
+<p>3. Implement 2 following endpoints:</p>
+
+<ul>
+	<li><code class="language-json">GET /students</code>: returns information about all 3 students as an array of JSON objects.</li>
+	<li><code class="language-json">GET /students/{id}</code>: returns a student with a specified id as a JSON object. If there is no user with a specified id, the program returns <code class="language-json">null</code>.</li>
+</ul>
+
+<p>Use the same set of students in both methods. The status code should be <code class="language-json">200 (OK)</code>.</p>
+
+<p><strong>Example 1: </strong>Response for a <code class="language-json">GET /students/84</code> request:</p>
+
+<pre><code class="language-json">{
+   "id": 84,
+   "name": "Alice"
+}
+</code></pre>
+
+<p><strong>Example 2: </strong>Response for a <code class="language-json">GET /students</code> request:</p>
+
+<pre><code class="language-json">[
+    {
+        "id": 84,
+        "name":"Alice"
+    },
+    {
+        "id": 99,
+        "name": "Kate"
+    },
+    {
+        "id": 55,
+        "name": "Someone"
+    }
+]
+</code></pre>

@@ -1,0 +1,23 @@
+<p><div class="alert alert-warning">This problem is fully supported by version 2021.9 of the EduTools plugin and newer. To avoid possible errors, please make sure that the plugin is updated. Alternatively, you can solve it using the web interface.</div></p>
+
+<p>Analyze the code and transform the plain Java class with one method to Spring controller by adding necessary annotations.</p>
+
+<p>The program should have the following endpoint:</p>
+
+<p><code class="language-json">GET /secret_numbers/{id}</code>: returns a secret number with a specified <code class="language-json">id</code> as JSON object with one field <code class="language-json">secret_number</code>. If a secret number with a specified <code class="language-json">id</code> is not present, the value of <code class="language-json">secret_number</code> should be equal to <code class="language-json">-1</code>.</p>
+
+<p>Do not change the content of the map or the logic of the method. Just add annotations needed for this task.</p>
+
+<p><strong>Example 1: </strong>Response for a <code class="language-json">GET /secret_numbers/4</code> request:</p>
+
+<pre><code class="language-json">{
+   "secret_number": 383832238472
+}
+</code></pre>
+
+<p><strong>Example 2: </strong>Response for a <code class="language-json">GET /secret_numbers/100</code> request:</p>
+
+<pre><code class="language-json">{
+   "secret_number": -1
+}
+</code></pre>

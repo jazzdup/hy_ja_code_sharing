@@ -1,0 +1,42 @@
+<p><div class="alert alert-warning">This problem is fully supported by version 2021.9 of the EduTools plugin and newer. To avoid possible errors, please make sure that the plugin is updated. Alternatively, you can solve it using the web interface.</div></p>
+
+<p>In this task, you need to implement a program that handles <code class="language-json">GET /colors</code> requests and returns a JSON with information about two colors.</p>
+
+<p>This task can be solved by simply returning one hardcoded <code class="language-json">String</code>, but try to use custom classes, <code class="language-json">Map</code>, and lists/arrays. Understanding how this works will help you when creating projects.</p>
+
+<p>Here is the JSON that endpoint <code class="language-json">GET /colors</code> should return:</p>
+
+<pre><code class="language-json">{
+   "colors":[
+      {
+         "color":"black",
+         "category":"hue",
+         "type":"primary",
+         "code":{
+            "rgba":[
+               0,
+               0,
+               0,
+               1
+            ],
+            "hex":"#000"
+         }
+      },
+      {
+         "color":"white",
+         "category":"value",
+         "type":"primary",
+         "code":{
+            "rgba":[
+               255,
+               255,
+               255,
+               1
+            ],
+            "hex":"#FFF"
+         }
+      }
+   ]
+}</code></pre>
+
+<p>The server should respond with <code class="language-json">200 (OK)</code> status code.</p>

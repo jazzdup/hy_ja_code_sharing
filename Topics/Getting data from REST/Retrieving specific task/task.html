@@ -1,0 +1,23 @@
+<p><div class="alert alert-warning">This problem is fully supported by version 2021.9 of the EduTools plugin and newer. To avoid possible errors, please make sure that the plugin is updated. Alternatively, you can solve it using the web interface.</div></p>
+
+<p>Improve the program to support the following endpoint:</p>
+
+<p><code class="language-json">GET /task/{id}</code> – returns a task with a specified <code class="language-json">id</code> as a JSON object (where <code class="language-json">{id}</code> is the <code class="language-json">id</code> of a task). If a task with inputted id does not exist the program should return <code class="language-json">defaultTask</code>. In both cases, the server should respond with <code class="language-json">200 (OK)</code> status code.</p>
+
+<p><strong>Example 1: </strong>Response for a <code class="language-json">GET /task/405</code> request:</p>
+
+<pre><code class="language-json">{
+   "id": 405,
+   "name": "Improve UI",
+   "description": "implement ..."
+}
+</code></pre>
+
+<p><strong>Example 2: </strong>Response for a <code class="language-json">GET /task/9999</code> request:</p>
+
+<pre><code class="language-json">{
+   "id": 0,
+   "name": null,
+   "description": null
+}
+</code></pre>
